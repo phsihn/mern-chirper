@@ -1,6 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './navbar.css';
+import { withStyles } from '@material-ui/core/styles';
+
+// material ui
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+
+// material ui style
+const styles = (theme) => ({
+	root: {
+		flexGrow: 1,
+	},
+	menuButton: {
+		marginRight: theme.spacing(2),
+	},
+	title: {
+		flexGrow: 1,
+	},
+});
 
 class NavBar extends React.Component {
 	constructor(props) {
@@ -15,33 +34,43 @@ class NavBar extends React.Component {
 	}
 
 	getLinks() {
+		const { classes } = this.props;
 		if (this.props.loggedIn) {
 			return (
-				<div>
-					<Link to={'/tweets'}>All Tweets</Link>
-					<Link to={'/profile'}>Profile</Link>
-					<Link to={'/new_tweet'}>Write a Tweet</Link>
-					<button onClick={this.logoutUser}>Logout</button>
-				</div>
+				<AppBar position='static'>
+					<Toolbar>
+						<Button component={Link} to='/tweets' color='inherit'>
+							All Tweets
+						</Button>
+						<Button component={Link} to='/profile' color='inherit'>
+							Profile
+						</Button>
+						<Button component={Link} to='/new_tweet' color='inherit'>
+							Write a Tweet
+						</Button>
+						<Button onClick={this.logoutUser}>Logout</Button>
+					</Toolbar>
+				</AppBar>
 			);
 		} else {
 			return (
-				<div>
-					<Link to={'/signup'}>Signup</Link>
-					<Link to={'/login'}>Login</Link>
-				</div>
+				<AppBar position='static'>
+					<Toolbar>
+						<Typography className={classes.title}>Chirper</Typography>
+						<Button component={Link} to='/signup' color='inherit'>
+							Sign Up
+						</Button>
+						<Button component={Link} to='/login' color='inherit'>
+							Login
+						</Button>
+					</Toolbar>
+				</AppBar>
 			);
 		}
 	}
 
 	render() {
-		return (
-			<div>
-				<h1>Chirper</h1>
-				{this.getLinks()}
-			</div>
-		);
+		return <div>{this.getLinks()}</div>;
 	}
 }
-
-export default NavBar;
+export default withStyles(styles)(NavBar);
